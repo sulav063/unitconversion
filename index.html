@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Unit Converter</h2>
+        <select id="unitType" onchange="populateUnits()">
+            <option value="length">Length</option>
+            <option value="weight">Weight</option>
+            <option value="volume">Volume</option>
+            <option value="temperature">Temperature</option>
+            <option value="speed">Speed</option>
+            <option value="time">Time</option>
+            <option value="digital">Digital Storage</option>
+            <option value="energy">Energy</option>
+        </select>
+        <input type="number" id="valueInput" placeholder="Enter value">
+        <select id="fromUnit"></select>
+        <select id="toUnit"></select>
+        <button onclick="convert()">Convert</button>
+        <div id="result" class="output"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
