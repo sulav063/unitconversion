@@ -11,7 +11,9 @@ const unitConversions = {
         "Liters": 1, "Milliliters": 0.001, "Cubic meters": 1000, "Cubic centimeters": 0.001,
         "Gallons": 3.78541, "Pints": 0.473176
     },
-    temperature: {},
+    temperature: {
+        "Celsius": "Celsius", "Fahrenheit": "Fahrenheit", "Kelvin": "Kelvin"
+    },
     speed: {
         "Meters per second": 1, "Kilometers per hour": 0.277778, "Miles per hour": 0.44704,
         "Knots": 0.514444
@@ -58,27 +60,35 @@ function convert() {
     }
 
     if (category === "temperature") {
-        if (fromUnit === "Celsius" && toUnit === "Fahrenheit") {
-            resultField.innerText = `${value}°C = ${(value * 9/5 + 32).toFixed(2)}°F`;
-        } else if (fromUnit === "Fahrenheit" && toUnit === "Celsius") {
-            resultField.innerText = `${value}°F = ${((value - 32) * 5/9).toFixed(2)}°C`;
-        } else if (fromUnit === "Celsius" && toUnit === "Kelvin") {
-            resultField.innerText = `${value}°C = ${(value + 273.15).toFixed(2)}K`;
-        } else if (fromUnit === "Kelvin" && toUnit === "Celsius") {
-            resultField.innerText = `${value}K = ${(value - 273.15).toFixed(2)}°C`;
-        } else if (fromUnit === "Fahrenheit" && toUnit === "Kelvin") {
-            resultField.innerText = `${value}°F = ${((value - 32) * 5/9 + 273.15).toFixed(2)}K`;
-        } else if (fromUnit === "Kelvin" && toUnit === "Fahrenheit") {
-            resultField.innerText = `${value}K = ${((value - 273.15) * 9/5 + 32).toFixed(2)}°F`;
-        } else {
-            resultField.innerText = "Invalid conversion";
-        }
+        resultField.innerText = `${value} ${fromUnit} = ${convertTemperature(value, fromUnit, toUnit)}`;
         return;
     }
 
     let baseValue = value * unitConversions[category][fromUnit];
     let convertedValue = baseValue / unitConversions[category][toUnit];
     resultField.innerText = `${value} ${fromUnit} = ${convertedValue.toFixed(6)} ${toUnit}`;
+}
+
+function convertTemperature(value, from, to) {
+    if (from === to) return `${value} ${to}`;
+
+    let converted;
+    switch (from) {
+        case "Celsius":
+            converted = to === "Fahrenheit" ? (value * 9 / 5 + 32) :
+                        to === "Kelvin" ? (value + 273.15) : null;
+            break;
+        case "Fahrenheit":
+            converted = to === "Celsius" ? ((value - 32) * 5 / 9) :
+                        to === "Kelvin" ? ((value - 32) * 5 / 9 + 273.15) : null;
+            break;
+        case "Kelvin":
+            converted = to === "Celsius" ? (value - 273.15) :
+                        to === "Fahrenheit" ? ((value - 273.15) * 9 / 5 + 32) : null;
+            break;
+    }
+
+    return converted !== null ? `${converted.toFixed(2)} ${to}` : "Invalid conversion";
 }
 
 document.addEventListener("DOMContentLoaded", populateUnits);
